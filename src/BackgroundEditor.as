@@ -20,102 +20,89 @@
  *	THE SOFTWARE.
  */
 
-package  
-{
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import starling.display.Stage;
-	import uk.co.soulwire.gui.SimpleGUI;
+package {
+import flash.display.Sprite;
+import flash.events.Event;
+import starling.display.Stage;
+import uk.co.soulwire.gui.SimpleGUI;
+
+/**
+ * Small panel to modify the color of the particle editor background.
+ * @author Devon O.
+ */
+public class BackgroundEditor extends Sprite {
 	
-	/**
-	 * Small panel to modify the color of the particle editor background.
-	 * @author Devon O.
-	 */
-	public class BackgroundEditor extends Sprite 
-	{
+	private var mGUI:SimpleGUI;
+	
+	private var mStage:Stage;
+	
+	public var r:Number;
+	public var g:Number;
+	public var b:Number;
+	
+	public function BackgroundEditor(stage:Stage) {
+		mStage = stage;
 		
-		private var mGUI:SimpleGUI;
+		splitColors(stage.color);
 		
-		private var mStage:Stage;
-		
-		public var r:Number;
-		public var g:Number;
-		public var b:Number;
-		
-		
-		public function BackgroundEditor(stage:Stage) 
-		{
-			mStage = stage;
-			
-			splitColors(stage.color);
-			
-			addEventListener(Event.ADDED_TO_STAGE, init);
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-		}
-		
-		private function destroy(event:Event):void 
-		{
-			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			mGUI = null;
-		}
-		
-		private function init(event:Event):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			initUI();
-		}
-		
-		private function initUI():void 
-		{
-			mGUI = new SimpleGUI(this, "Background Editor");
-			
-			mGUI.addSlider("r", 0, 1.0, { label:"R", callback:onRed } );
-			mGUI.addSlider("g", 0, 1.0, { label:"G", callback:onGreen } );
-			mGUI.addSlider("b", 0, 1.0, { label:"B", callback:onBlue } );
-			
-			mGUI.addButton("Done", { callback:onDone } );
-			
-			mGUI.show();	
-		}
-		
-		private function onRed(o:*):void 
-		{
-			combineColors();
-		}
-		
-		private function onGreen(o:*):void 
-		{
-			combineColors()
-		}
-		
-		private function onBlue(o:*):void 
-		{
-			combineColors();
-		}
-		
-		private function splitColors(color:uint):void 
-		{
-			r = color >> 16;
-			g = color >> 8 & 0xFF;
-			b = color & 0xFF;
-			
-			r /= 0xFF;
-			g /= 0xFF;
-			b /= 0xFF;
-		}
-		
-		private function combineColors():void 
-		{
-			var red:uint = r * 0xFF;
-			var green:uint = g * 0xFF;
-			var blue:uint = b * 0xFF;
-			mStage.color = red << 16 | green << 8 | blue;
-		}
-		
-		private function onDone(o:*):void 
-		{
-			dispatchEvent(new Event(Event.COMPLETE));
-		}
+		addEventListener(Event.ADDED_TO_STAGE, init);
+		addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 	}
+	
+	private function destroy(event:Event):void {
+		removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
+		mGUI = null;
+	}
+	
+	private function init(event:Event):void {
+		removeEventListener(Event.ADDED_TO_STAGE, init);
+		initUI();
+	}
+	
+	private function initUI():void {
+		mGUI = new SimpleGUI(this, "Background Editor");
+		
+		mGUI.addSlider("r", 0, 1.0, {label: "R", callback: onRed});
+		mGUI.addSlider("g", 0, 1.0, {label: "G", callback: onGreen});
+		mGUI.addSlider("b", 0, 1.0, {label: "B", callback: onBlue});
+		
+		mGUI.addButton("Done", {callback: onDone});
+		
+		mGUI.show();
+	}
+	
+	private function onRed(o:*):void {
+		combineColors();
+	}
+	
+	private function onGreen(o:*):void {
+		combineColors()
+	}
+	
+	private function onBlue(o:*):void {
+		combineColors();
+	}
+	
+	private function splitColors(color:uint):void {
+		r = color >> 16;
+		g = color >> 8 & 0xFF;
+		b = color & 0xFF;
+		
+		r /= 0xFF;
+		g /= 0xFF;
+		b /= 0xFF;
+	}
+	
+	private function combineColors():void {
+		var red:uint = r * 0xFF;
+		var green:uint = g * 0xFF;
+		var blue:uint = b * 0xFF;
+		mStage.color = red << 16 | green << 8 | blue;
+	}
+	
+	private function onDone(o:*):void {
+		dispatchEvent(new Event(Event.COMPLETE));
+	}
+}
 
 }

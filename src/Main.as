@@ -20,62 +20,59 @@
  *	THE SOFTWARE.
  */
 
+package {
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.geom.Rectangle;
+import starling.core.Starling;
 
-package 
-{
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
-	import flash.events.Event;
-	import flash.geom.Rectangle;
-	import starling.core.Starling;
+/**
+ * Entry point of particle editor
+ * @author Devon O.
+ */
+
+[SWF(width='1400',height='750',backgroundColor='#232323',frameRate='60')]
+
+public class Main extends Sprite {
 	
-	/**
-	 * Entry point of particle editor
-	 * @author Devon O.
-	 */
-
-	[SWF(width='1400', height='750', backgroundColor='#232323', frameRate='60')]
-	public class Main extends Sprite 
-	{
-		
-		public static var PARTICLE_SETTINGS:NullSprite;
-		
-		private var mStarling:Starling;
-		
-		public function Main():void 
-		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(event:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-
-			PARTICLE_SETTINGS = new NullSprite();
-			PARTICLE_SETTINGS.x = 400;
-			addChild(PARTICLE_SETTINGS);
-			
-			initStage();
-			initParticleDisplay();
-		}
-		
-		private function initStage():void 
-		{
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			stage.showDefaultContextMenu = false;
-		}
-		
-		private function initParticleDisplay():void {
-			mStarling = new Starling(ParticleDisplay, stage, new Rectangle(0, 0, 400, 500));
-			mStarling.antiAliasing = 4;
-			mStarling.stage.color = 0x000000;
-			mStarling.enableErrorChecking = false;
-			mStarling.start();
-		}
-		
+	public static var PARTICLE_SETTINGS:NullSprite;
+	
+	private var mStarling:Starling;
+	
+	public function Main():void {
+		if (stage)
+			init();
+		else
+			addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 	
+	private function init(event:Event = null):void {
+		removeEventListener(Event.ADDED_TO_STAGE, init);
+		
+		PARTICLE_SETTINGS = new NullSprite();
+		PARTICLE_SETTINGS.x = 400;
+		addChild(PARTICLE_SETTINGS);
+		
+		initStage();
+		initParticleDisplay();
+	}
+	
+	private function initStage():void {
+		stage.scaleMode = StageScaleMode.NO_SCALE;
+		stage.align = StageAlign.TOP_LEFT;
+		stage.showDefaultContextMenu = false;
+	}
+	
+	private function initParticleDisplay():void {
+		mStarling = new Starling(ParticleDisplay, stage, new Rectangle(0, 0, 400, 500));
+		mStarling.antiAliasing = 4;
+		mStarling.stage.color = 0x000000;
+		mStarling.enableErrorChecking = false;
+		mStarling.start();
+	}
+
+}
+
 }
