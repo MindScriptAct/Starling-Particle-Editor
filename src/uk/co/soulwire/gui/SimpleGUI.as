@@ -57,18 +57,18 @@ import flash.utils.getQualifiedClassName;
  * SimpleGUI
  */
 
-public class SimpleGUI extends EventDispatcher {
+public class SimpleGUI extends Sprite {
 	//	----------------------------------------------------------------
 	//	CONSTANTS
 	//	----------------------------------------------------------------
 	
 	public static const VERSION:Number = 1.02;
 	
-	private static const TOOLBAR_HEIGHT:int = 13;
-	private static const COMPONENT_MARGIN:int = 8;
+	private static const TOOLBAR_HEIGHT:int = 1;
+	private static const COMPONENT_MARGIN:int = 7;
 	private static const COLUMN_MARGIN:int = 1;
 	private static const GROUP_MARGIN:int = 1;
-	private static const PADDING:int = 20;
+	private static const PADDING:int = 8;
 	private static const MARGIN:int = 1;
 	
 	//	----------------------------------------------------------------
@@ -145,9 +145,11 @@ public class SimpleGUI extends EventDispatcher {
 	public function show():void {
 		_lineV.visible = false;
 		
-		_target.addChild(_container);
-		_target.addChild(_toolbar);
-		_target.addChild(_toggle);
+		_target.addChild(this);
+		
+		this.addChild(_container);
+		this.addChild(_toolbar);
+		this.addChild(_toggle);
 		
 		_hidden = false;
 	}
@@ -159,12 +161,12 @@ public class SimpleGUI extends EventDispatcher {
 	public function hide():void {
 		_lineV.visible = true;
 		
-		if (!_showToggle && _target.contains(_toggle))
-			_target.removeChild(_toggle);
-		if (_target.contains(_container))
-			_target.removeChild(_container);
-		if (_target.contains(_toolbar))
-			_target.removeChild(_toolbar);
+		if (!_showToggle && this.contains(_toggle))
+			this.removeChild(_toggle);
+		if (this.contains(_container))
+			this.removeChild(_container);
+		if (this.contains(_toolbar))
+			this.removeChild(_toolbar);
 		
 		_hidden = true;
 	}
@@ -531,18 +533,36 @@ public class SimpleGUI extends EventDispatcher {
 		button.addEventListener(MouseEvent.CLICK, onSaveButtonClicked);
 	}
 	
+	public function dispose():void {
+		hide();
+		_components = null;
+		_parameters = null;
+		_container = null;
+		_target = null;
+		_active = null;
+		_stage = null;
+		
+		_toolbar = null;
+		_message = null;
+		_version = null;
+		_toggle = null;
+		_lineH = null;
+		_lineV = null;
+	}
+	
 	//	----------------------------------------------------------------
 	//	PRIVATE METHODS
 	//	----------------------------------------------------------------
 	
 	private function initStyles():void {
-		Style.PANEL = 0x333333;
-		Style.BACKGROUND = 0x333333;
-		Style.INPUT_TEXT = 0xEEEEEE;
-		Style.LABEL_TEXT = 0xEEEEEE;
-		Style.BUTTON_FACE = 0x555555;
-		Style.DROPSHADOW = 0x000000;
-		Style.embedFonts = true;
+		//Style.PANEL = 0x333333;
+		//Style.BACKGROUND = 0x333333;
+		//Style.INPUT_TEXT = 0xEBEBEB;
+		//Style.LABEL_TEXT = 0xEBEBEB;
+		//Style.BUTTON_FACE = 0x555555;
+		//Style.DROPSHADOW = 0x000000;
+		//Style.embedFonts = true;
+		Style.setStyle(Style.DARK);
 	}
 	
 	private function initToolbar():void {
@@ -963,6 +983,7 @@ public class SimpleGUI extends EventDispatcher {
 	public function get components():Vector.<Component> {
 		return _components;
 	}
+
 }
 }
 import com.bit101.components.ComboBox;

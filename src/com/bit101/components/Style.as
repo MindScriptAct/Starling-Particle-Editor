@@ -58,6 +58,7 @@ package com.bit101.components
 		 */
 		public static function setStyle(style:String):void
 		{
+			trace( "Style.setStyle > style : " + style );
 			switch(style)
 			{
 				case DARK:

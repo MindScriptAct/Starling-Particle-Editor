@@ -21,6 +21,7 @@
  */
 
 package {
+import com.bit101.components.Style;
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -33,7 +34,7 @@ import starling.core.Starling;
  * @author Devon O.
  */
 
-[SWF(width='1400',height='750',backgroundColor='#232323',frameRate='60')]
+[SWF(width='1400',height='900',backgroundColor='#232323',frameRate='60')]
 
 public class Main extends Sprite {
 	
@@ -51,8 +52,9 @@ public class Main extends Sprite {
 	private function init(event:Event = null):void {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 		
+		Style.setStyle(Style.DARK);
+		
 		PARTICLE_SETTINGS = new NullSprite();
-		PARTICLE_SETTINGS.x = 400;
 		addChild(PARTICLE_SETTINGS);
 		
 		initStage();
@@ -66,11 +68,21 @@ public class Main extends Sprite {
 	}
 	
 	private function initParticleDisplay():void {
-		mStarling = new Starling(ParticleDisplay, stage, new Rectangle(0, 0, 400, 500));
-		mStarling.antiAliasing = 4;
+		mStarling = new Starling(ParticleDisplay, stage, new Rectangle(0, 20, this.stage.stageWidth - 390, this.stage.stageHeight - 20));
+		mStarling.antiAliasing = 0;
 		mStarling.stage.color = 0x000000;
 		mStarling.enableErrorChecking = false;
+		CONFIG::debug {
+			mStarling.enableErrorChecking = true;
+		}
 		mStarling.start();
+		
+		this.stage.addEventListener(Event.RESIZE, handleStageResize);
+	}
+	
+	private function handleStageResize(event:Event):void {
+		mStarling.viewPort.width = this.stage.stageWidth - 390;
+		mStarling.viewPort.height = this.stage.stageHeight - 20;
 	}
 
 }
