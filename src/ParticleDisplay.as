@@ -111,7 +111,6 @@ public class ParticleDisplay extends Sprite {
 	private var currentType:String;
 	
 	private var typeChangeButton:PushButton;
-	;
 	
 	public function ParticleDisplay() {
 		CIRCLE_DATA = new DEFAULT_PARTICLE().bitmapData;
@@ -350,12 +349,6 @@ public class ParticleDisplay extends Sprite {
 		var rand:Number = Math.random() * (max - min) + min;
 		var d:Number = Math.pow(10, decimals);
 		return ~~((d * rand) + 0.5) / d;
-	}
-	
-	// COLUMN ONE - PARTICLES
-	private function onEmitter(o:*):void {
-		mConfig.emitterType.@value = o.selectedItem.data;
-		mParticleSystem.mEmitterType = o.selectedItem.data;
 	}
 	
 	private function onXVar(o:*):void {
@@ -713,30 +706,49 @@ public class ParticleDisplay extends Sprite {
 	
 	/** set all gui and particle setting from loaded .pex file */
 	private function buildParticleFromXML(xml:XML):void {
-		var i:int = mGUI.components.length;
 		
+		// handle emiter type
+		val = parseFloat(xml.emitterType.@value);
+		switch (val) {
+			case 1: 
+				idx = 1;
+				currentType = TYPE_RADIAL;
+				break;
+			case 0:
+			default: 
+				idx = 0;
+				currentType = TYPE_GRAVITY;
+		}
+		Main.PARTICLE_SETTINGS.emitterType = idx;
+		mConfig.emitterType.@value = idx;
+		mParticleSystem.mEmitterType = idx;
+		
+		initSimpleGui();
+		
+		
+		var i:int = mGUI.components.length;
 		while (i--) {
 			var comp:Component = mGUI.components[i];
 			var val:Number;
 			var idx:int;
 			
-			if (comp.name == "emitterType") {
-				val = parseFloat(xml.emitterType.@value);
-				switch (val) {
-					case 0: 
-						idx = 0;
-						break;
-					case 1: 
-						idx = 1;
-						break;
-					default: 
-						idx = 0;
-				}
-				
-				Main.PARTICLE_SETTINGS.emitterType = idx;
-				(comp as ComboBox).selectedIndex = idx;
-				onEmitter(comp);
-			}
+			//if (comp.name == "emitterType") {
+			//val = parseFloat(xml.emitterType.@value);
+			//switch (val) {
+			//case 0: 
+			//idx = 0;
+			//break;
+			//case 1: 
+			//idx = 1;
+			//break;
+			//default: 
+			//idx = 0;
+			//}
+			//
+			//Main.PARTICLE_SETTINGS.emitterType = idx;
+			//(comp as ComboBox).selectedIndex = idx;
+			//onEmitter(comp);
+			//}
 			
 			if (comp.name == "maxParts") {
 				val = parseFloat(xml.maxParticles.@value);
